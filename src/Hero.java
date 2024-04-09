@@ -17,6 +17,8 @@ public class Hero {
     public boolean leftPressed;
     public boolean upPressed;
     public boolean downPressed;
+    public boolean spacePressed;
+    public int cone;
 
     public static void main(String[] args) {
 
@@ -31,6 +33,7 @@ public class Hero {
         height = 80;
         isAlive = true;
         rec = new Rectangle(xpos, ypos, width, height);
+        cone = 1;
     }
 
     public void move() { // User control move method
@@ -60,6 +63,33 @@ public class Hero {
 //        xpos = xpos + dx;
 //        ypos = ypos + dy;
         rec = new Rectangle(xpos, ypos, width, height);
+    }
+
+    public void chooseCone(){
+//        if (spacePressed){
+//            if (cone == 3){
+//                cone = 1;
+//                System.out.println("hit" + cone);
+//            }
+//            else {
+//                cone += 1;
+//            }
+//            System.out.println(cone);
+//        }
+        boolean not = true;
+        while (not){
+            if (spacePressed){
+            if (cone == 3){
+                cone = 1;
+                System.out.println("hit" + cone);
+            }
+            else {
+                cone += 1;
+            }
+            System.out.println(cone);
+        }
+            not = false;
+        }
     }
 
     public void wrappingMove(){

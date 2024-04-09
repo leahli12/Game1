@@ -74,11 +74,11 @@ import javax.swing.JPanel;
             //create (construct) the objects needed for the game below
             //for each object that has a picture, load in images as well
             /** STEP 3: Construct a specific Hero object **/
-        astro = new Hero(50, 50, 1, 2);
+            astro = new Hero(50, 50, 1, 2);
 //        astro.printInfo();
 
             /** STEP 4: load in the image for your object **/
-            astroPic = Toolkit.getDefaultToolkit().getImage("cone.jpg");
+            astroPic = Toolkit.getDefaultToolkit().getImage("vanilla.png");
             // pastel = Toolkit.getDefaultToolkit().getImage("pastel.jpeg");
 //            ob1Pic = Toolkit.getDefaultToolkit().getImage("rock.png");
 
@@ -109,7 +109,19 @@ import javax.swing.JPanel;
             //draw the image of your objects below:
             // This is technically not the actual object! It's just a picture
             g.drawImage(pastel, 0,0, 1000, 700, null);
-            g.drawImage(astroPic, astro.xpos, astro.ypos, 200,200, null);
+            // g.drawImage(astroPic, astro.xpos, astro.ypos, 200,200, null);
+            if (astro.cone == 1){
+                astroPic = Toolkit.getDefaultToolkit().getImage("vanilla.png");
+                g.drawImage(astroPic, astro.xpos, astro.ypos, 200,200, null);
+            }
+            else if (astro.cone == 2){
+                astroPic = Toolkit.getDefaultToolkit().getImage("chocolate.png");
+                g.drawImage(astroPic, astro.xpos, astro.ypos, 200,200, null);
+            }
+            else if (astro.cone == 3){
+                astroPic = Toolkit.getDefaultToolkit().getImage("sakura.png");
+                g.drawImage(astroPic, astro.xpos, astro.ypos, 200,200, null);
+            }
 
             //dispose the images each time(this allows for the illusion of movement).
             g.dispose();
@@ -122,6 +134,7 @@ import javax.swing.JPanel;
 //        astro.bouncingMove();
 //            ob1.bouncingMove();
             astro.move();
+            astro.chooseCone();
         }
 
         public void collisions(){
@@ -211,7 +224,7 @@ import javax.swing.JPanel;
         public void keyPressed(KeyEvent e) {
             char key = e.getKeyChar();
             int keyCode = e.getKeyCode();
-            // System.out.println("Key: " + key + ", KeyCode: " + keyCode);
+//            System.out.println("Key: " + key + ", KeyCode: " + keyCode);
             if (keyCode == 68){ // d = 68
                 astro.rightPressed = true; // name of whatever hero you end up using
             }
@@ -223,6 +236,13 @@ import javax.swing.JPanel;
             }
             if (keyCode == 83) { // s
                 astro.downPressed = true;
+            }
+            if (keyCode == 32) { // space
+                astro.spacePressed = true;
+                System.out.println("space");
+            }
+            if (keyCode == 10){ // enter
+
             }
         }
 
@@ -241,6 +261,13 @@ import javax.swing.JPanel;
             }
             if (keyCode == 83) { // s
                 astro.downPressed = false;
+            }
+            if (keyCode == 32) { // space
+                astro.spacePressed = false;
+                System.out.println("off");
+            }
+            if (keyCode == 10) { // enter
+
             }
         }
     }
