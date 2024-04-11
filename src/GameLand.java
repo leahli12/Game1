@@ -52,9 +52,12 @@ import javax.swing.JPanel;
         //Declare the objects used in the program below
         /** STEP 1: Declare your object and give it a name **/
         public Hero astro;
+        public Scoop[] scoops;
+        public Scoop testScoop;
         /** STEP 2: Declare an image for your object **/
         public Image pastel;
         public Image astroPic;
+        public Image testScoopPic;
 
         // Main method definition: PSVM
         // This is the code that runs first and automatically
@@ -74,13 +77,19 @@ import javax.swing.JPanel;
             //create (construct) the objects needed for the game below
             //for each object that has a picture, load in images as well
             /** STEP 3: Construct a specific Hero object **/
-            astro = new Hero(50, 50, 1, 2);
+            astro = new Hero(50, 425, 1, 2);
+            scoops = new Scoop[6];
+            testScoop = new Scoop((int)(Math.random() * 9 + 1), (int)(Math.random() * 900 + 50));
+//            for (int x = 0; x < scoops.length; x++) {
+//                scoops[x] = new Scoop((int)(Math.random()* 8 + 1), (int)(Math.random() * 900));
+//            }
 //        astro.printInfo();
 
             /** STEP 4: load in the image for your object **/
             astroPic = Toolkit.getDefaultToolkit().getImage("vanilla.png");
             // pastel = Toolkit.getDefaultToolkit().getImage("pastel.jpeg");
 //            ob1Pic = Toolkit.getDefaultToolkit().getImage("rock.png");
+            scoopDecision(testScoop);
 
         }// GameLand()
 
@@ -97,6 +106,7 @@ import javax.swing.JPanel;
                 moveThings();  //move all the game objects
                 collisions(); // checks for all intersections
                 render();  // paint the graphics
+                astro.chooseCone();
                 pause(20); // sleep for 20 ms
             }
         }
@@ -108,20 +118,26 @@ import javax.swing.JPanel;
 
             //draw the image of your objects below:
             // This is technically not the actual object! It's just a picture
-            g.drawImage(pastel, 0,0, 1000, 700, null);
+           //  g.drawImage(pastel, 0,0, 1000, 700, null);
             // g.drawImage(astroPic, astro.xpos, astro.ypos, 200,200, null);
             if (astro.cone == 1){
                 astroPic = Toolkit.getDefaultToolkit().getImage("vanilla.png");
-                g.drawImage(astroPic, astro.xpos, astro.ypos, 200,200, null);
+                g.drawImage(astroPic, astro.xpos, astro.ypos, 300,300, null);
             }
             else if (astro.cone == 2){
                 astroPic = Toolkit.getDefaultToolkit().getImage("chocolate.png");
-                g.drawImage(astroPic, astro.xpos, astro.ypos, 200,200, null);
+                g.drawImage(astroPic, astro.xpos, astro.ypos, 300,300, null);
             }
             else if (astro.cone == 3){
                 astroPic = Toolkit.getDefaultToolkit().getImage("sakura.png");
-                g.drawImage(astroPic, astro.xpos, astro.ypos, 200,200, null);
+                g.drawImage(astroPic, astro.xpos, astro.ypos, 300,300, null);
             }
+            g.drawImage(testScoopPic, testScoop.xpos, testScoop.ypos, 150,150, null);
+
+//            for (int x = 0; x < scoops.length; x++) {
+//                    g.drawImage(scoops[x].pic, scoops[x].xpos, , 230, 230, null);
+//            }
+            // Write the picture generation based off of cheese world... gl bro
 
             //dispose the images each time(this allows for the illusion of movement).
             g.dispose();
@@ -134,7 +150,7 @@ import javax.swing.JPanel;
 //        astro.bouncingMove();
 //            ob1.bouncingMove();
             astro.move();
-            astro.chooseCone();
+            testScoop.move();
         }
 
         public void collisions(){
@@ -168,6 +184,35 @@ import javax.swing.JPanel;
 //                else if (winner == 2){
 //                    ob1.identity = ob2.identity;
 //                }
+            }
+
+            public void scoopDecision(Scoop scoop){
+                if (scoop.identity == 1){
+                    testScoopPic = Toolkit.getDefaultToolkit().getImage("s1.png");
+                }
+                else if (scoop.identity == 2){
+                    testScoopPic = Toolkit.getDefaultToolkit().getImage("s2.png");
+                } else if (scoop.identity == 3){
+                    testScoopPic = Toolkit.getDefaultToolkit().getImage("s3.png");
+                }
+                else if (scoop.identity == 4){
+                    testScoopPic = Toolkit.getDefaultToolkit().getImage("s4.png");
+                }
+                else if (scoop.identity == 5){
+                    testScoopPic = Toolkit.getDefaultToolkit().getImage("s5.png");
+                }
+                else if (scoop.identity == 6){
+                    testScoopPic = Toolkit.getDefaultToolkit().getImage("s6.png");
+                }
+                else if (scoop.identity == 7){
+                    testScoopPic = Toolkit.getDefaultToolkit().getImage("s7.png");
+                }
+                else if (scoop.identity == 8){
+                    testScoopPic = Toolkit.getDefaultToolkit().getImage("s8.png");
+                }
+                else if (scoop.identity == 9){
+                    testScoopPic = Toolkit.getDefaultToolkit().getImage("s9.png");
+                }
             }
 
         //Pauses or sleeps the computer for the amount specified in milliseconds
@@ -239,7 +284,6 @@ import javax.swing.JPanel;
             }
             if (keyCode == 32) { // space
                 astro.spacePressed = true;
-                System.out.println("space");
             }
             if (keyCode == 10){ // enter
 
@@ -264,7 +308,6 @@ import javax.swing.JPanel;
             }
             if (keyCode == 32) { // space
                 astro.spacePressed = false;
-                System.out.println("off");
             }
             if (keyCode == 10) { // enter
 

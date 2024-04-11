@@ -40,14 +40,15 @@ public class Hero {
         // Horizontal
         if(rightPressed){
             xpos = xpos + dx;
-            dx = 2;
+            dx = 15;
             // System.out.println("test right pressed");
         } else if (leftPressed){
             xpos = xpos - dx;
 //            dy = 1;
             // System.out.println("left");
-            dx = 2;
+            dx = 15;
         }
+
 //        else if (upPressed){
 //            ypos = ypos - dy;
 //            dy = 2;
@@ -62,6 +63,12 @@ public class Hero {
         }
 //        xpos = xpos + dx;
 //        ypos = ypos + dy;
+        if (xpos > 950){
+            xpos = -200;
+        }
+        if (xpos < -200) {
+            xpos = 950;
+        }
         rec = new Rectangle(xpos, ypos, width, height);
     }
 
@@ -76,9 +83,7 @@ public class Hero {
 //            }
 //            System.out.println(cone);
 //        }
-        boolean not = true;
-        while (not){
-            if (spacePressed){
+        if (spacePressed){
             if (cone == 3){
                 cone = 1;
                 System.out.println("hit" + cone);
@@ -88,7 +93,15 @@ public class Hero {
             }
             System.out.println(cone);
         }
-            not = false;
+        pause(50);
+    }
+
+    public void pause(int time) {
+        //sleep
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+
         }
     }
 
