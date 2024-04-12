@@ -49,13 +49,18 @@ import javax.swing.JPanel;
 
         public BufferStrategy bufferStrategy;
 
+        public boolean startScreen = true;
+        public boolean level1;
+        public boolean level2;
+        public boolean level3;
+
         //Declare the objects used in the program below
         /** STEP 1: Declare your object and give it a name **/
         public Hero astro;
         public Scoop[] scoops;
         public Scoop testScoop;
         /** STEP 2: Declare an image for your object **/
-        public Image pastel;
+        public Image startPic;
         public Image astroPic;
         public Image testScoopPic;
 
@@ -87,7 +92,7 @@ import javax.swing.JPanel;
 
             /** STEP 4: load in the image for your object **/
             astroPic = Toolkit.getDefaultToolkit().getImage("vanilla.png");
-            // pastel = Toolkit.getDefaultToolkit().getImage("pastel.jpeg");
+            startPic = Toolkit.getDefaultToolkit().getImage("start.png");
 //            ob1Pic = Toolkit.getDefaultToolkit().getImage("rock.png");
             scoopDecision(testScoop);
 
@@ -115,25 +120,29 @@ import javax.swing.JPanel;
         private void render() {
             Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
             g.clearRect(0, 0, WIDTH, HEIGHT);
-
-            //draw the image of your objects below:
-            // This is technically not the actual object! It's just a picture
-           //  g.drawImage(pastel, 0,0, 1000, 700, null);
-            // g.drawImage(astroPic, astro.xpos, astro.ypos, 200,200, null);
-            if (astro.cone == 1){
-                astroPic = Toolkit.getDefaultToolkit().getImage("vanilla.png");
-                g.drawImage(astroPic, astro.xpos, astro.ypos, 300,300, null);
+            if (startScreen) {
+                //g.drawString("Press w to start", 400, 300);
+                g.drawImage(startPic, 0, 0, WIDTH, HEIGHT, null);
             }
-            else if (astro.cone == 2){
-                astroPic = Toolkit.getDefaultToolkit().getImage("chocolate.png");
-                g.drawImage(astroPic, astro.xpos, astro.ypos, 300,300, null);
+            if (!startScreen) {
+                //draw the image of your objects below:
+                // This is technically not the actual object! It's just a picture
+                  // g.drawImage(pastel, 0,0, 1000, 700, null);
+                // g.drawImage(astroPic, astro.xpos, astro.ypos, 200,200, null);
+                startPic = Toolkit.getDefaultToolkit().getImage("gamebg.png");
+                g.drawImage(startPic, 0, 0, WIDTH, HEIGHT, null);
+                if (astro.cone == 1) {
+                    astroPic = Toolkit.getDefaultToolkit().getImage("vanilla.png");
+                    g.drawImage(astroPic, astro.xpos, astro.ypos, 300, 300, null);
+                } else if (astro.cone == 2) {
+                    astroPic = Toolkit.getDefaultToolkit().getImage("chocolate.png");
+                    g.drawImage(astroPic, astro.xpos, astro.ypos, 300, 300, null);
+                } else if (astro.cone == 3) {
+                    astroPic = Toolkit.getDefaultToolkit().getImage("sakura.png");
+                    g.drawImage(astroPic, astro.xpos, astro.ypos, 300, 300, null);
+                }
+                g.drawImage(testScoopPic, testScoop.xpos, testScoop.ypos, 150, 150, null);
             }
-            else if (astro.cone == 3){
-                astroPic = Toolkit.getDefaultToolkit().getImage("sakura.png");
-                g.drawImage(astroPic, astro.xpos, astro.ypos, 300,300, null);
-            }
-            g.drawImage(testScoopPic, testScoop.xpos, testScoop.ypos, 150,150, null);
-
 //            for (int x = 0; x < scoops.length; x++) {
 //                    g.drawImage(scoops[x].pic, scoops[x].xpos, , 230, 230, null);
 //            }
@@ -141,7 +150,6 @@ import javax.swing.JPanel;
 
             //dispose the images each time(this allows for the illusion of movement).
             g.dispose();
-
             bufferStrategy.show();
         }
 
@@ -184,6 +192,14 @@ import javax.swing.JPanel;
 //                else if (winner == 2){
 //                    ob1.identity = ob2.identity;
 //                }
+                if(testScoop.rec.intersects(astro.rec)){
+                    testScoop.notAttached = false;
+                    if (astro.dx > 0){
+                        testScoop.xpos = astro.xpos + 80;
+                    }
+                    testScoop.xpos = astro.xpos;
+                    testScoop.ypos = astro.ypos;
+                }
             }
 
             public void scoopDecision(Scoop scoop){
@@ -278,6 +294,7 @@ import javax.swing.JPanel;
             }
             if (keyCode == 87) { // w
                 astro.upPressed = true;
+                startScreen = false;
             }
             if (keyCode == 83) { // s
                 astro.downPressed = true;

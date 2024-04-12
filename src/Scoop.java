@@ -1,4 +1,7 @@
+import java.awt.*;
+
 public class Scoop {
+    public Rectangle rec;
     public int identity;
     public int xpos;
     public int ypos;
@@ -9,6 +12,7 @@ public class Scoop {
         xpos = pos;
         ypos = -125;
         notAttached = true;
+        rec = new Rectangle(xpos, ypos, 150, 150);
     }
 
     public void move(){
@@ -18,5 +22,6 @@ public class Scoop {
                 ypos = -125;
             }
         }
+        rec = new Rectangle(xpos, ypos, 150, 150);
     }
 }

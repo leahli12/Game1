@@ -43,10 +43,10 @@ public class Hero {
             dx = 15;
             // System.out.println("test right pressed");
         } else if (leftPressed){
-            xpos = xpos - dx;
+            xpos = xpos + dx;
 //            dy = 1;
             // System.out.println("left");
-            dx = 15;
+            dx = -15;
         }
 
 //        else if (upPressed){
