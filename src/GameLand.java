@@ -82,7 +82,7 @@ import javax.swing.JPanel;
             //create (construct) the objects needed for the game below
             //for each object that has a picture, load in images as well
             /** STEP 3: Construct a specific Hero object **/
-            astro = new Hero(50, 425, 1, 2);
+            astro = new Hero(50, 570, 1, 2);
             scoops = new Scoop[6];
             testScoop = new Scoop((int)(Math.random() * 9 + 1), (int)(Math.random() * 900 + 50));
 //            for (int x = 0; x < scoops.length; x++) {
@@ -133,15 +133,16 @@ import javax.swing.JPanel;
                 g.drawImage(startPic, 0, 0, WIDTH, HEIGHT, null);
                 if (astro.cone == 1) {
                     astroPic = Toolkit.getDefaultToolkit().getImage("vanilla.png");
-                    g.drawImage(astroPic, astro.xpos, astro.ypos, 300, 300, null);
+                    g.drawImage(astroPic, astro.xpos, astro.ypos, 165, 265, null);
                 } else if (astro.cone == 2) {
                     astroPic = Toolkit.getDefaultToolkit().getImage("chocolate.png");
-                    g.drawImage(astroPic, astro.xpos, astro.ypos, 300, 300, null);
+                    g.drawImage(astroPic, astro.xpos, astro.ypos, 165, 265, null);
                 } else if (astro.cone == 3) {
                     astroPic = Toolkit.getDefaultToolkit().getImage("sakura.png");
-                    g.drawImage(astroPic, astro.xpos, astro.ypos, 300, 300, null);
+                    g.drawImage(astroPic, astro.xpos, astro.ypos, 165, 265, null);
                 }
-                g.drawImage(testScoopPic, testScoop.xpos, testScoop.ypos, 150, 150, null);
+                scoopDecision(testScoop);
+                g.drawImage(testScoopPic, testScoop.xpos, testScoop.ypos, 163, 163, null);
             }
 //            for (int x = 0; x < scoops.length; x++) {
 //                    g.drawImage(scoops[x].pic, scoops[x].xpos, , 230, 230, null);
@@ -192,13 +193,11 @@ import javax.swing.JPanel;
 //                else if (winner == 2){
 //                    ob1.identity = ob2.identity;
 //                }
-                if(testScoop.rec.intersects(astro.rec)){
+                if(testScoop.rec.intersects(astro.rec) || !testScoop.notAttached){
+                    // Lisa made this ^ unsustainable but whatever (make cone and scoop the same width?)
                     testScoop.notAttached = false;
-                    if (astro.dx > 0){
-                        testScoop.xpos = astro.xpos + 80;
-                    }
                     testScoop.xpos = astro.xpos;
-                    testScoop.ypos = astro.ypos;
+                    testScoop.ypos = astro.ypos - 125;
                 }
             }
 
@@ -303,7 +302,8 @@ import javax.swing.JPanel;
                 astro.spacePressed = true;
             }
             if (keyCode == 10){ // enter
-
+                System.out.println("enter");
+                testScoop.reset = true;
             }
         }
 
@@ -327,7 +327,6 @@ import javax.swing.JPanel;
                 astro.spacePressed = false;
             }
             if (keyCode == 10) { // enter
-
             }
         }
     }

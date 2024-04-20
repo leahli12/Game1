@@ -29,8 +29,8 @@ public class Hero {
         ypos = pYpos;
         dx = pDx; // one pixel per millisecond or the pause time
         dy = pDy;
-        width = 70;
-        height = 80;
+        width = 165;
+        height = 265;
         isAlive = true;
         rec = new Rectangle(xpos, ypos, width, height);
         cone = 1;
@@ -63,11 +63,11 @@ public class Hero {
         }
 //        xpos = xpos + dx;
 //        ypos = ypos + dy;
-        if (xpos > 950){
+        if (xpos > 960){
             xpos = -200;
         }
         if (xpos < -200) {
-            xpos = 950;
+            xpos = 960;
         }
         rec = new Rectangle(xpos, ypos, width, height);
     }
@@ -86,12 +86,10 @@ public class Hero {
         if (spacePressed){
             if (cone == 3){
                 cone = 1;
-                System.out.println("hit" + cone);
             }
             else {
                 cone += 1;
             }
-            System.out.println(cone);
         }
         pause(50);
     }
