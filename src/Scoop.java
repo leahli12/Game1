@@ -11,7 +11,7 @@ public class Scoop {
     public Scoop(int xID, int pos){
         identity = xID;
         xpos = pos;
-        ypos = -(int)(Math.random()*400 + 125);
+        ypos = -(int)(Math.random()*900 + 150);
         notAttached = true;
         reset = false;
         rec = new Rectangle(xpos, ypos, 163, 163);
@@ -22,13 +22,13 @@ public class Scoop {
             ypos = ypos + 10;
             if (ypos > 775){
                 ypos = -125;
+                reset = true;
             }
         }
         if (reset){
-            ypos = -(int)(Math.random()*400 + 125);
+            ypos = -(int)(Math.random()*900 + 150);
             notAttached = true;
             identity = (int)(Math.random()*9 + 1);
-            System.out.println(identity);
             xpos = (int)(Math.random() * 900 + 50);
             reset = false;
         }

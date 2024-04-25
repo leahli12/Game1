@@ -58,6 +58,7 @@ import javax.swing.JPanel;
         /** STEP 1: Declare your object and give it a name **/
         public Hero astro;
         public Scoop[] scoops;
+        public Image[] pics;
         public Scoop testScoop;
         /** STEP 2: Declare an image for your object **/
         public Image startPic;
@@ -83,8 +84,12 @@ import javax.swing.JPanel;
             //for each object that has a picture, load in images as well
             /** STEP 3: Construct a specific Hero object **/
             astro = new Hero(50, 570, 1, 2);
-            scoops = new Scoop[6];
-            testScoop = new Scoop((int)(Math.random() * 9 + 1), (int)(Math.random() * 900 + 50));
+            scoops = new Scoop[4];
+            for (int i=0; i<4; i++){
+                scoops[i] = new Scoop((int)(Math.random() * 9 + 1), (int)(Math.random() * 900 + 50));
+            }
+            pics = new Image[4];
+//            testScoop = new Scoop((int)(Math.random() * 9 + 1), (int)(Math.random() * 900 + 50));
 //            for (int x = 0; x < scoops.length; x++) {
 //                scoops[x] = new Scoop((int)(Math.random()* 8 + 1), (int)(Math.random() * 900));
 //            }
@@ -94,7 +99,10 @@ import javax.swing.JPanel;
             astroPic = Toolkit.getDefaultToolkit().getImage("vanilla.png");
             startPic = Toolkit.getDefaultToolkit().getImage("start.png");
 //            ob1Pic = Toolkit.getDefaultToolkit().getImage("rock.png");
-            scoopDecision(testScoop);
+//            scoopDecision(testScoop);
+            for (int i=0; i<4; i++){
+                scoopDecision(i);
+            }
 
         }// GameLand()
 
@@ -141,13 +149,20 @@ import javax.swing.JPanel;
                     astroPic = Toolkit.getDefaultToolkit().getImage("sakura.png");
                     g.drawImage(astroPic, astro.xpos, astro.ypos, 165, 265, null);
                 }
-                scoopDecision(testScoop);
-                g.drawImage(testScoopPic, testScoop.xpos, testScoop.ypos, 163, 163, null);
+
+//                scoopDecision(testScoop);
+                for (int i=0; i<4; i++){
+                    scoopDecision(i);
+                }
+
+//                g.drawImage(testScoopPic, testScoop.xpos, testScoop.ypos, 163, 163, null);
+                for (int i=0; i<4; i++){
+                    g.drawImage(pics[i], scoops[i].xpos, scoops[i].ypos, 163, 163, null);
+                }
             }
 //            for (int x = 0; x < scoops.length; x++) {
 //                    g.drawImage(scoops[x].pic, scoops[x].xpos, , 230, 230, null);
 //            }
-            // Write the picture generation based off of cheese world... gl bro
 
             //dispose the images each time(this allows for the illusion of movement).
             g.dispose();
@@ -159,76 +174,99 @@ import javax.swing.JPanel;
 //        astro.bouncingMove();
 //            ob1.bouncingMove();
             astro.move();
-            testScoop.move();
+//            testScoop.move();
+            for (int i=0; i<4; i++){
+                scoops[i].move();
+            }
         }
 
         public void collisions(){
-            // makes them bounce off of each other
-//            ob1.dx = -1 * ob1.dx;
-//            ob1.dy = -1 * ob1.dy;
-//            ob3.dx = -1 * ob3.dx;
-//            ob3.dy = -1 * ob3.dy;
-            // Stops moving the object and puts it far out of the screen to make it "disappear"
-//            ob3.isAlive = false;
-//            ob3.dy = 0;
-//            ob3.dx = 0;
-//            ob3.xpos = 2000;
-            // Makes an object get bigger
-//        if (ob2.rec.intersects(ob1.rec) && (!ob2IsIntersectingob1)){
-//            ob2IsIntersectingob1 = true;
-//            System.out.println("Ouch");
-//            ob1.width++;
-//            ob1.height++;
-//        }
-//        if (!(ob2.rec.intersects(ob1.rec))){
-//            ob2IsIntersectingob1 = false;
-//        }
+//                if(testScoop.rec.intersects(astro.rec) || !testScoop.notAttached){
+//                    // Lisa made this ^ unsustainable but whatever (make cone and scoop the same width?)
+//                    testScoop.notAttached = false;
+//                    testScoop.xpos = astro.xpos;
+//                    testScoop.ypos = astro.ypos - 125;
+//                }
 
-//            if (ob1.rec.intersects(ob2.rec) && (!ob1IsIntersectingob2)){
-//                ob1IsIntersectingob2 = true;
-//                winner = faceOff(ob1, ob2);
-//                if (winner == 1){
-//                    ob2.identity = ob1.identity;
-//                }
-//                else if (winner == 2){
-//                    ob1.identity = ob2.identity;
-//                }
-                if(testScoop.rec.intersects(astro.rec) || !testScoop.notAttached){
-                    // Lisa made this ^ unsustainable but whatever (make cone and scoop the same width?)
-                    testScoop.notAttached = false;
-                    testScoop.xpos = astro.xpos;
-                    testScoop.ypos = astro.ypos - 125;
+                for (int i = 0; i<4; i++){
+                    for (int h = 0; h<4; h++){
+                        if(scoops[i].rec.intersects(scoops[h].rec) && (h != i) && scoops[i].notAttached && scoops[h].notAttached){
+                                scoops[i].xpos = (int)(Math.random() * 900 + 50);
+                        }
+                    }
+                }
+
+                boolean attached = false;
+                int attachedScoop = 10; // filler value
+                for (int i = 0; i<4; i++) {
+                        // Once it is attached once, the attached scoop also won't attach bc it assumes it isn't them
+                    // Write some kind of one-time code to attach the first scoop, then another for the second scoop?
+                    if (scoops[i].rec.intersects(astro.rec) && (attachedScoop == 10 || attachedScoop == i) ) {
+                        attachedScoop = i;
+                        scoops[i].notAttached = false;
+                        scoops[i].xpos = astro.xpos;
+                        scoops[i].ypos = astro.ypos - 125;
+                    }
                 }
             }
 
-            public void scoopDecision(Scoop scoop){
-                if (scoop.identity == 1){
-                    testScoopPic = Toolkit.getDefaultToolkit().getImage("s1.png");
+            public void scoopDecision(int i){
+                if (scoops[i].identity == 1){
+                    pics[i] = Toolkit.getDefaultToolkit().getImage("s1.png");
                 }
-                else if (scoop.identity == 2){
-                    testScoopPic = Toolkit.getDefaultToolkit().getImage("s2.png");
-                } else if (scoop.identity == 3){
-                    testScoopPic = Toolkit.getDefaultToolkit().getImage("s3.png");
+                else if (scoops[i].identity == 2){
+                    pics[i] = Toolkit.getDefaultToolkit().getImage("s2.png");
+                } else if (scoops[i].identity == 3){
+                    pics[i] = Toolkit.getDefaultToolkit().getImage("s3.png");
                 }
-                else if (scoop.identity == 4){
-                    testScoopPic = Toolkit.getDefaultToolkit().getImage("s4.png");
+                else if (scoops[i].identity == 4){
+                    pics[i] = Toolkit.getDefaultToolkit().getImage("s4.png");
                 }
-                else if (scoop.identity == 5){
-                    testScoopPic = Toolkit.getDefaultToolkit().getImage("s5.png");
+                else if (scoops[i].identity == 5){
+                    pics[i] = Toolkit.getDefaultToolkit().getImage("s5.png");
                 }
-                else if (scoop.identity == 6){
-                    testScoopPic = Toolkit.getDefaultToolkit().getImage("s6.png");
+                else if (scoops[i].identity == 6){
+                    pics[i] = Toolkit.getDefaultToolkit().getImage("s6.png");
                 }
-                else if (scoop.identity == 7){
-                    testScoopPic = Toolkit.getDefaultToolkit().getImage("s7.png");
+                else if (scoops[i].identity == 7){
+                    pics[i] = Toolkit.getDefaultToolkit().getImage("s7.png");
                 }
-                else if (scoop.identity == 8){
-                    testScoopPic = Toolkit.getDefaultToolkit().getImage("s8.png");
+                else if (scoops[i].identity == 8){
+                    pics[i] = Toolkit.getDefaultToolkit().getImage("s8.png");
                 }
-                else if (scoop.identity == 9){
-                    testScoopPic = Toolkit.getDefaultToolkit().getImage("s9.png");
+                else if (scoops[i].identity == 9){
+                    pics[i] = Toolkit.getDefaultToolkit().getImage("s9.png");
                 }
             }
+
+        public void scoopDecision(Scoop scoop){
+            if (scoop.identity == 1){
+                testScoopPic = Toolkit.getDefaultToolkit().getImage("s1.png");
+            }
+            else if (scoop.identity == 2){
+                testScoopPic = Toolkit.getDefaultToolkit().getImage("s2.png");
+            } else if (scoop.identity == 3){
+                testScoopPic = Toolkit.getDefaultToolkit().getImage("s3.png");
+            }
+            else if (scoop.identity == 4){
+                testScoopPic = Toolkit.getDefaultToolkit().getImage("s4.png");
+            }
+            else if (scoop.identity == 5){
+                testScoopPic = Toolkit.getDefaultToolkit().getImage("s5.png");
+            }
+            else if (scoop.identity == 6){
+                testScoopPic = Toolkit.getDefaultToolkit().getImage("s6.png");
+            }
+            else if (scoop.identity == 7){
+                testScoopPic = Toolkit.getDefaultToolkit().getImage("s7.png");
+            }
+            else if (scoop.identity == 8){
+                testScoopPic = Toolkit.getDefaultToolkit().getImage("s8.png");
+            }
+            else if (scoop.identity == 9){
+                testScoopPic = Toolkit.getDefaultToolkit().getImage("s9.png");
+            }
+        }
 
         //Pauses or sleeps the computer for the amount specified in milliseconds
         public void pause(int time) {
@@ -284,26 +322,28 @@ import javax.swing.JPanel;
         public void keyPressed(KeyEvent e) {
             char key = e.getKeyChar();
             int keyCode = e.getKeyCode();
-//            System.out.println("Key: " + key + ", KeyCode: " + keyCode);
-            if (keyCode == 68){ // d = 68
+            System.out.println("Key: " + key + ", KeyCode: " + keyCode);
+            if (keyCode == 39){ // d = 68
                 astro.rightPressed = true; // name of whatever hero you end up using
             }
-            if (keyCode == 65){ // a = 65
+            if (keyCode == 37){ // a = 65
                 astro.leftPressed = true; // empty name
             }
             if (keyCode == 87) { // w
                 astro.upPressed = true;
                 startScreen = false;
             }
-            if (keyCode == 83) { // s
+            if (keyCode == 39) { // s
                 astro.downPressed = true;
             }
             if (keyCode == 32) { // space
                 astro.spacePressed = true;
             }
             if (keyCode == 10){ // enter
-                System.out.println("enter");
-                testScoop.reset = true;
+//                testScoop.reset = true;
+                for (int i = 0; i<4; i++){
+                    scoops[i].reset = true;
+                }
             }
         }
 
@@ -311,10 +351,10 @@ import javax.swing.JPanel;
         public void keyReleased(KeyEvent e) {
             char key = e.getKeyChar();
             int keyCode = e.getKeyCode();
-            if (keyCode == 68){ // d = 68
+            if (keyCode == 39){ // d = 68
                 astro.rightPressed = false; // name of whatever hero you end up using
             }
-            if (keyCode == 65){ // a = 65
+            if (keyCode == 37){ // a = 65
                 astro.leftPressed = false; // empty name
             }
             if (keyCode == 87) { // w
