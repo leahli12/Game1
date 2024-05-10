@@ -64,6 +64,7 @@ import javax.swing.JPanel;
         public Image startPic;
         public Image astroPic;
         public Image testScoopPic;
+        public int attachedScoop = 10;
 
         // Main method definition: PSVM
         // This is the code that runs first and automatically
@@ -180,7 +181,7 @@ import javax.swing.JPanel;
             }
         }
 
-        public void collisions(){
+        public void collisions() {
 //                if(testScoop.rec.intersects(astro.rec) || !testScoop.notAttached){
 //                    // Lisa made this ^ unsustainable but whatever (make cone and scoop the same width?)
 //                    testScoop.notAttached = false;
@@ -188,27 +189,28 @@ import javax.swing.JPanel;
 //                    testScoop.ypos = astro.ypos - 125;
 //                }
 
-                for (int i = 0; i<4; i++){
-                    for (int h = 0; h<4; h++){
-                        if(scoops[i].rec.intersects(scoops[h].rec) && (h != i) && scoops[i].notAttached && scoops[h].notAttached){
-                                scoops[i].xpos = (int)(Math.random() * 900 + 50);
-                        }
+            for (int i = 0; i < 4; i++) {
+                for (int h = 0; h < 4; h++) {
+                    if (scoops[i].rec.intersects(scoops[h].rec) && (h != i) && scoops[i].notAttached && scoops[h].notAttached) {
+                        scoops[i].xpos = (int) (Math.random() * 900 + 50);
                     }
                 }
+            }
 
-                boolean attached = false;
-                int attachedScoop = 10; // filler value
-                for (int i = 0; i<4; i++) {
-                        // Once it is attached once, the attached scoop also won't attach bc it assumes it isn't them
-                    // Write some kind of one-time code to attach the first scoop, then another for the second scoop?
-                    if (scoops[i].rec.intersects(astro.rec) && (attachedScoop == 10 || attachedScoop == i) ) {
+            for (int i = 0; i < 4; i++) {
+                // Bigger indexes will be replaced by lower indexes and left to die (whyyyy)
+                if (scoops[i].rec.intersects(astro.rec) || !scoops[i].notAttached) {
+                    if (attachedScoop == 10 || attachedScoop == i) {
+                        System.out.println("AHHHHHHHHHHHHHHHHHHHHHHHHH");
                         attachedScoop = i;
+                        System.out.println(attachedScoop);
                         scoops[i].notAttached = false;
                         scoops[i].xpos = astro.xpos;
                         scoops[i].ypos = astro.ypos - 125;
                     }
                 }
             }
+        }
 
             public void scoopDecision(int i){
                 if (scoops[i].identity == 1){
@@ -322,7 +324,7 @@ import javax.swing.JPanel;
         public void keyPressed(KeyEvent e) {
             char key = e.getKeyChar();
             int keyCode = e.getKeyCode();
-            System.out.println("Key: " + key + ", KeyCode: " + keyCode);
+//            System.out.println("Key: " + key + ", KeyCode: " + keyCode);
             if (keyCode == 39){ // d = 68
                 astro.rightPressed = true; // name of whatever hero you end up using
             }
@@ -344,6 +346,7 @@ import javax.swing.JPanel;
                 for (int i = 0; i<4; i++){
                     scoops[i].reset = true;
                 }
+                attachedScoop = 10;
             }
         }
 

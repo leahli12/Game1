@@ -25,6 +25,14 @@ public class Scoop {
                 reset = true;
             }
         }
+        if (!notAttached) {
+            if (xpos < -150){
+                xpos = 940;
+            }
+            if(xpos > 940){
+                xpos = -150;
+            }
+        }
         if (reset){
             ypos = -(int)(Math.random()*900 + 150);
             notAttached = true;

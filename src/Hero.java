@@ -63,11 +63,11 @@ public class Hero {
         }
 //        xpos = xpos + dx;
 //        ypos = ypos + dy;
-        if (xpos > 960){
+        if (xpos > 1000){
             xpos = -200;
         }
         if (xpos < -200) {
-            xpos = 960;
+            xpos = 1000;
         }
         rec = new Rectangle(xpos, ypos, width, height);
     }
@@ -104,11 +104,11 @@ public class Hero {
     }
 
     public void wrappingMove(){
-        if (xpos > 1000){
+        if (xpos > 1040){
             xpos = 0;
         }
         if (xpos < 0) {
-            xpos = 1000;
+            xpos = 1040;
         }
         if (ypos > 700) {
             ypos = 0;
