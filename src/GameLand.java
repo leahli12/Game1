@@ -65,6 +65,7 @@ import javax.swing.JPanel;
         public Image astroPic;
         public Image testScoopPic;
         public int attachedScoop = 10;
+        public int attachedScoop2 = 10;
 
         // Main method definition: PSVM
         // This is the code that runs first and automatically
@@ -193,17 +194,22 @@ import javax.swing.JPanel;
                 for (int h = 0; h < 4; h++) {
                     if (scoops[i].rec.intersects(scoops[h].rec) && (h != i) && scoops[i].notAttached && scoops[h].notAttached) {
                         scoops[i].xpos = (int) (Math.random() * 900 + 50);
+                    } else if (scoops[i].rec.intersects(scoops[h].rec) && (h != i) && (!scoops[i].notAttached || !scoops[h].notAttached)){
+                        if (attachedScoop2 == 10 || attachedScoop2 == i){
+                            System.out.println("true" + i + h);
+                            attachedScoop2 = i;
+                            scoops[i].notAttached = false;
+                            scoops[i].xpos = astro.xpos;
+                            scoops[i].ypos = astro.ypos - 250;
+                        }
                     }
                 }
             }
 
             for (int i = 0; i < 4; i++) {
-                // Bigger indexes will be replaced by lower indexes and left to die (whyyyy)
                 if (scoops[i].rec.intersects(astro.rec) || !scoops[i].notAttached) {
                     if (attachedScoop == 10 || attachedScoop == i) {
-                        System.out.println("AHHHHHHHHHHHHHHHHHHHHHHHHH");
                         attachedScoop = i;
-                        System.out.println(attachedScoop);
                         scoops[i].notAttached = false;
                         scoops[i].xpos = astro.xpos;
                         scoops[i].ypos = astro.ypos - 125;
@@ -347,6 +353,7 @@ import javax.swing.JPanel;
                     scoops[i].reset = true;
                 }
                 attachedScoop = 10;
+                attachedScoop2 = 10;
             }
         }
 
