@@ -36,7 +36,7 @@ public class Scoop {
         if (reset){
             ypos = -(int)(Math.random()*900 + 150);
             notAttached = true;
-            identity = (int)(Math.random()*9 + 1);
+            identity = (int)(Math.random()*11 + 1);
             xpos = (int)(Math.random() * 900 + 50);
             reset = false;
         }

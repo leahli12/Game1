@@ -19,6 +19,8 @@
 
 //Graphics Libraries
 
+    // If sprinkles have lower index, they show up behind (either create new Scoop instance or make sure it can only generate on 3
+// Sprinkles not moving with cone
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -66,6 +68,7 @@ import javax.swing.JPanel;
         public Image testScoopPic;
         public int attachedScoop = 10;
         public int attachedScoop2 = 10;
+        public boolean anyAttached = false;
 
         // Main method definition: PSVM
         // This is the code that runs first and automatically
@@ -209,19 +212,39 @@ import javax.swing.JPanel;
 
             for (int i = 0; i < 4; i++) {
                 if (scoops[i].rec.intersects(astro.rec) || !scoops[i].notAttached) {
-                    if (attachedScoop == 10 || attachedScoop == i) {
-                        attachedScoop = i;
-                        scoops[i].notAttached = false;
-                        scoops[i].xpos = astro.xpos;
-                        scoops[i].ypos = astro.ypos - 125;
-                    } else if (attachedScoop2 == 10 || attachedScoop2 == i) {
-                        attachedScoop2 = i;
-                        scoops[i].notAttached = false;
-                        scoops[i].xpos = astro.xpos;
-                        scoops[i].ypos = astro.ypos - 250;
+                    if (scoops[i].identity < 10) {
+                        if (attachedScoop == 10 || attachedScoop == i) {
+                            attachedScoop = i;
+                            scoops[i].notAttached = false;
+                            scoops[i].xpos = astro.xpos;
+                            scoops[i].ypos = astro.ypos - 125;
+                        } else if (attachedScoop2 == 10 || attachedScoop2 == i) {
+                            attachedScoop2 = i;
+                            scoops[i].notAttached = false;
+                            scoops[i].xpos = astro.xpos;
+                            scoops[i].ypos = astro.ypos - 250;
+                        }
+                    } else {
+                        for (int k = 0; k < 4; k++){
+                            if (!scoops[k].notAttached) {
+                                anyAttached = true;
+                                break;
+                            }
+                        }
+                        if (anyAttached && scoops[i].rec.intersects(astro.rec) && attachedScoop2 == 10){
+                            scoops[i].notAttached = false;
+                            scoops[i].xpos = astro.xpos;
+                            scoops[i].ypos = astro.ypos - 125;
+                        } else if (anyAttached && scoops[i].rec.intersects(astro.rec)){
+                            scoops[i].notAttached = false;
+                            scoops[i].xpos = astro.xpos;
+                            scoops[i].ypos = astro.ypos - 250;
+                        }
                     }
                 }
             }
+
+
         }
 
             public void scoopDecision(int i){
@@ -250,37 +273,10 @@ import javax.swing.JPanel;
                 }
                 else if (scoops[i].identity == 9){
                     pics[i] = Toolkit.getDefaultToolkit().getImage("s9.png");
+                } else {
+                    pics[i] = Toolkit.getDefaultToolkit().getImage("sprinkles.png");
                 }
             }
-
-        public void scoopDecision(Scoop scoop){
-            if (scoop.identity == 1){
-                testScoopPic = Toolkit.getDefaultToolkit().getImage("s1.png");
-            }
-            else if (scoop.identity == 2){
-                testScoopPic = Toolkit.getDefaultToolkit().getImage("s2.png");
-            } else if (scoop.identity == 3){
-                testScoopPic = Toolkit.getDefaultToolkit().getImage("s3.png");
-            }
-            else if (scoop.identity == 4){
-                testScoopPic = Toolkit.getDefaultToolkit().getImage("s4.png");
-            }
-            else if (scoop.identity == 5){
-                testScoopPic = Toolkit.getDefaultToolkit().getImage("s5.png");
-            }
-            else if (scoop.identity == 6){
-                testScoopPic = Toolkit.getDefaultToolkit().getImage("s6.png");
-            }
-            else if (scoop.identity == 7){
-                testScoopPic = Toolkit.getDefaultToolkit().getImage("s7.png");
-            }
-            else if (scoop.identity == 8){
-                testScoopPic = Toolkit.getDefaultToolkit().getImage("s8.png");
-            }
-            else if (scoop.identity == 9){
-                testScoopPic = Toolkit.getDefaultToolkit().getImage("s9.png");
-            }
-        }
 
         //Pauses or sleeps the computer for the amount specified in milliseconds
         public void pause(int time) {
@@ -360,6 +356,7 @@ import javax.swing.JPanel;
                 }
                 attachedScoop = 10;
                 attachedScoop2 = 10;
+                anyAttached = false;
             }
         }
 
