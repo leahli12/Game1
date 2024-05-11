@@ -194,15 +194,16 @@ import javax.swing.JPanel;
                 for (int h = 0; h < 4; h++) {
                     if (scoops[i].rec.intersects(scoops[h].rec) && (h != i) && scoops[i].notAttached && scoops[h].notAttached) {
                         scoops[i].xpos = (int) (Math.random() * 900 + 50);
-                    } else if (scoops[i].rec.intersects(scoops[h].rec) && (h != i) && (!scoops[i].notAttached || !scoops[h].notAttached)){
-                        if (attachedScoop2 == 10 || attachedScoop2 == i){
-                            System.out.println("true" + i + h);
-                            attachedScoop2 = i;
-                            scoops[i].notAttached = false;
-                            scoops[i].xpos = astro.xpos;
-                            scoops[i].ypos = astro.ypos - 250;
-                        }
                     }
+//                    else if (scoops[i].rec.intersects(scoops[h].rec) && (h != i) && (!scoops[i].notAttached || !scoops[h].notAttached)){
+//                        if (attachedScoop2 == 10 || attachedScoop2 == i){
+//                            System.out.println("true" + i + h);
+//                            attachedScoop2 = i;
+//                            scoops[i].notAttached = false;
+//                            scoops[i].xpos = astro.xpos;
+//                            scoops[i].ypos = astro.ypos - 250;
+//                        }
+//                    }
                 }
             }
 
@@ -213,6 +214,11 @@ import javax.swing.JPanel;
                         scoops[i].notAttached = false;
                         scoops[i].xpos = astro.xpos;
                         scoops[i].ypos = astro.ypos - 125;
+                    } else if (attachedScoop2 == 10 || attachedScoop2 == i) {
+                        attachedScoop2 = i;
+                        scoops[i].notAttached = false;
+                        scoops[i].xpos = astro.xpos;
+                        scoops[i].ypos = astro.ypos - 250;
                     }
                 }
             }
