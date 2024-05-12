@@ -7,6 +7,7 @@ public class Scoop {
     public int ypos;
     public boolean notAttached;
     public boolean reset;
+    public int scoopOn;
 
     public Scoop(int xID, int pos){
         identity = xID;
@@ -36,9 +37,10 @@ public class Scoop {
         if (reset){
             ypos = -(int)(Math.random()*900 + 150);
             notAttached = true;
-            identity = (int)(Math.random()*11 + 1);
+            identity = (int)(Math.random()*9 + 1);
             xpos = (int)(Math.random() * 900 + 50);
             reset = false;
+            scoopOn = 0;
         }
         rec = new Rectangle(xpos, ypos, 150, 150);
     }
