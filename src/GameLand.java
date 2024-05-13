@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
+import java.awt.Color;
 import java.awt.*;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
@@ -63,6 +64,8 @@ import javax.swing.JPanel;
         public int scoop2 = (int)(Math.random()*13 + 1);
         public int sprinkles1 = (int)(Math.random()*4 + 1);
         public int sprinkles2 = (int)(Math.random()*4 + 1);
+        public int[] submission = new int[5];
+        public int score = 0;
 
         // Main method definition: PSVM
         // This is the code that runs first and automatically
@@ -145,6 +148,8 @@ import javax.swing.JPanel;
                 g.drawImage(startPic, 0, 0, WIDTH, HEIGHT, null);
             }
             if (!startScreen) {
+                g.setFont(new Font("Optima", Font.PLAIN, 17));
+                g.setColor(Color.getHSBColor(223.64F, 91F, 88.24F));
                 //draw the image of your objects below:
                 // This is technically not the actual object! It's just a picture
                   // g.drawImage(pastel, 0,0, 1000, 700, null);
@@ -161,7 +166,6 @@ import javax.swing.JPanel;
                     astroPic = Toolkit.getDefaultToolkit().getImage("sakura.png");
                     g.drawImage(astroPic, astro.xpos, astro.ypos, 165, 265, null);
                 }
-//                g.drawString("Score: " + 10, 350, 350);
                 g.drawImage(Toolkit.getDefaultToolkit().getImage("order.png"), 850, 0, 150, 225, null);
 
 //                scoopDecision(testScoop);
@@ -180,7 +184,7 @@ import javax.swing.JPanel;
                 createOrder();
                 // 910, 120, 35, 70; 910, 95, 35, 35; 910, 95, 35, 35;
                 drawOrder();
-
+                g.drawString("Score: " + score, 895, 210);
             }
 //            for (int x = 0; x < scoops.length; x++) {
 //                    g.drawImage(scoops[x].pic, scoops[x].xpos, , 230, 230, null);
@@ -262,6 +266,7 @@ import javax.swing.JPanel;
                         toppings[i].xpos = astro.xpos;
                         toppings[i].ypos = astro.ypos - 125;
                     } else if ((attachedScoop2 != 10 && toppings[i].rec.intersects(astro.rec)) || !toppings[i].notAttached) {
+                        toppings[i].scoopOn = 2;
                         toppings[i].notAttached = false;
                         toppings[i].xpos = astro.xpos;
                         toppings[i].ypos = astro.ypos - 250;
@@ -321,7 +326,7 @@ import javax.swing.JPanel;
             }
 
             if (scoop2 < 10){
-                correctAnswer[3] = (scoop2);
+                correctAnswer[3] = scoop2;
                 if (scoop2 == 1){
                     correctAnswerPics[3] = (Toolkit.getDefaultToolkit().getImage("s1.png"));
                 } else if (scoop2 == 2){
@@ -345,6 +350,8 @@ import javax.swing.JPanel;
                 if (sprinkles2 == 1){
                     correctAnswer[4] = (10);
                     correctAnswerPics[4] = (Toolkit.getDefaultToolkit().getImage("sprinkles.png"));
+                } else {
+                    correctAnswer[4] = 0;
                 }
             } else {
                 correctAnswer[3] = 0;
@@ -366,10 +373,10 @@ import javax.swing.JPanel;
             if (correctAnswer[4] != 0){
                 g.drawImage(correctAnswerPics[4], 910, 70, 35, 35, null);
             }
-            for (int i = 0; i<5; i++){
-                System.out.print(correctAnswer[i] + " ");
-            }
-            System.out.println();
+//            for (int i = 0; i<5; i++){
+//                System.out.print(correctAnswer[i] + " ");
+//            }
+//            System.out.println();
         }
 
             public void scoopDecision(int i){
@@ -401,6 +408,49 @@ import javax.swing.JPanel;
                 } else {
                     pics[i] = Toolkit.getDefaultToolkit().getImage("sprinkles.png");
                 }
+            }
+
+            public boolean evaluateCone(){
+                submission[0] = astro.cone;
+                if (attachedScoop != 10) { // checking it isn't empty
+                    submission[1] = scoops[attachedScoop].identity;
+                } else {
+                    submission[1] = 0;
+                }
+                // sprinkles will either have 10 in the array or 0
+                if (attachedScoop2 != 10) {
+                    submission[3] = scoops[attachedScoop2].identity; // equals 10 when empty
+                } else {
+                    submission[3] = 0;
+                }
+                    // sprinkles have scoopOn toppings[x]
+                for (int i = 0; i<2; i++){
+                    if (toppings[i].scoopOn == 1){
+                        submission[2] = 10;
+//                        System.out.println(submission[2]);
+                    } else if (toppings[i].scoopOn == 2){
+                        submission[4] = 10;
+                    }
+                }
+//                System.out.println("after for" + submission[2]);
+                if (submission[2] != 10){
+                    submission[2] = 0;
+                }
+                if (submission[4] != 10){
+                    submission[4] = 0;
+                }
+                for (int i = 0; i<4; i++){
+//                    System.out.println(submission[i] + " vs " + correctAnswer[i]);
+                    if (submission[i] != correctAnswer[i]){
+                        return false;
+                    }
+                }
+                if (submission[3] == 0) {
+                    score += 10;
+                } else {
+                    score += 20;
+                }
+                return true;
             }
 
         //Pauses or sleeps the computer for the amount specified in milliseconds
@@ -478,8 +528,12 @@ import javax.swing.JPanel;
                 // Find the identity of attachedScoop/2 (if they exist)
                 // Check the identity of astro.cone
                 // Check to see if the sprinkles are on and which one (use scoopOn?)
+                evaluateCone();
                 for (int i = 0; i<4; i++){
                     scoops[i].reset = true;
+                }
+                for (int i = 0; i<4; i++){
+                    submission[i] = 0;
                 }
                 for (int i = 0; i < 2; i++){
                     toppings[i].reset = true;
